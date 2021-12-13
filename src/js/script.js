@@ -10,23 +10,24 @@
     for (const book of books) {
       const generatedHTML = template(book);
       const item = utils.createDOMFromHTML(generatedHTML);
-      item.addEventListener('dblclick', function (event) {
-        event.preventDefault();
-        const link = item.querySelector('.book__image');
-        const id = link.getAttribute('data-id')
+      container.appendChild(item);
+    }
+
+    container.addEventListener('dblclick', function (event) {
+      event.preventDefault();
+      const element = event.target.offsetParent;
+      if (element.classList.contains('book__image')) {
+        const id = element.getAttribute('data-id')
         if (!favoriteBooks.includes(id))
           favoriteBooks.push(id);
         else {
           const index = favoriteBooks.indexOf(id);
           favoriteBooks.splice(index, 1);
         }
-        console.log("tablica", favoriteBooks);
-        link.classList.toggle('favorite');
-      });
-      container.appendChild(item);
-    }
+        element.classList.toggle('favorite');
+      }
+    });    
   }
 
   bookLoop();
-
 }
